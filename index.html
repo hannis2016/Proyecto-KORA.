@@ -63,6 +63,51 @@
         .kora-card .kora-phrase { font: italic 19px/1.4 Georgia, serif; text-align: center; margin: 20px 0 0; }
         .kora-close { position: absolute; top: 12px; right: 14px; width: 36px; height: 36px; border: 0; background: rgba(255,255,255,.6); border-radius: 50%; font: 28px/1 Arial, sans-serif; color: #292329; cursor: pointer; }
         @media (max-width: 420px) { .kora-card { padding: 22px 20px 18px; } .kora-card h2 { font-size: 24px; } }
+
+        /* Pantalla de bienvenida KORA: logo cromado y botón rosa */
+        #overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: #ffffff !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 16px !important;
+            box-sizing: border-box;
+            padding: 24px;
+        }
+        #overlay.hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+        .kora-start-logo {
+            display: block;
+            width: min(88vw, 470px);
+            max-height: 45vh;
+            height: auto;
+            object-fit: contain;
+        }
+        #start-button {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            min-width: 130px;
+            padding: 10px 30px !important;
+            background: #F85FAF !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 14px !important;
+            font: bold 20px/1.2 Georgia, 'Times New Roman', serif !important;
+            letter-spacing: normal !important;
+            text-transform: none !important;
+            text-shadow: none !important;
+            box-shadow: none !important;
+            cursor: pointer;
+        }
+        #start-button:active { transform: scale(.97); }
     </style>
 </head>
 
@@ -85,6 +130,7 @@
 	<div class="log" id="log">asdasdsa</div>
 
 	<div id="overlay">
+		<img src="assets/kora-logo.png" alt="KORA" class="kora-start-logo">
 		<button id="start-button">Iniciar</button>
 		<div id="progress-container">
 			<div id="progress-bar-track">
