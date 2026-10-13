@@ -183,7 +183,14 @@
                     console.warn('KORA: no se encontró el plano de', button.type);
                     continue;
                 }
-                mesh.onClick = () => mostrarProducto(button.type);
+                // Conserva el sonido configurado en Three.js Editor.
+                const originalOnClick = mesh.onClick;
+                mesh.onClick = function (...args) {
+                    if (typeof originalOnClick === 'function') {
+                        originalOnClick.apply(this, args);
+                    }
+                    mostrarProducto(button.type);
+                };
                 console.log('KORA: botón configurado:', button.type);
             }
         }
