@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-	<title></title>
+	<title>KORA</title>
 	<meta charset="utf-8">
 	<meta name="generator" content="Three.js Editor">
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -90,11 +90,22 @@
             height: auto;
             object-fit: contain;
         }
-        #start-button {
+        .kora-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        #overlay [hidden] { display: none !important; }
+        #progress-container { display: none; }
+
+        .kora-action {
             display: inline-flex !important;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
             min-width: 130px;
+            text-decoration: none;
             padding: 10px 30px !important;
             background: #F85FAF !important;
             color: #ffffff !important;
@@ -107,7 +118,7 @@
             box-shadow: none !important;
             cursor: pointer;
         }
-        #start-button:active { transform: scale(.97); }
+        .kora-action:active { transform: scale(.97); }
 
         /* Barra de carga KORA en rosado */
         #progress-bar-fill { background: #F85FAF !important; background-color: #F85FAF !important; }
@@ -134,14 +145,29 @@
 
 	<div id="overlay">
 		<img src="assets/kora-logo.png" alt="KORA" class="kora-start-logo">
-		<button id="start-button">Iniciar</button>
+		<button id="start-button" class="kora-action" type="button" aria-controls="kora-menu">Iniciar</button>
+		<div id="kora-menu" class="kora-menu" role="group" aria-label="Experiencias KORA" hidden>
+			<a id="filter-link" class="kora-action" href="https://filtrokora.vercel.app/">Filtro</a>
+			<button id="reality-button" class="kora-action" type="button">Realidad</button>
+		</div>
 		<div id="progress-container">
 			<div id="progress-bar-track">
 				<div id="progress-bar-fill"></div>
 			</div>
-			<div id="progress-label">Cargando... 0%</div>
+			<div id="progress-label" role="status">Cargando... 0%</div>
 		</div>
 	</div>
+
+	<script>
+		const welcomeButton = document.getElementById('start-button');
+		const koraMenu = document.getElementById('kora-menu');
+
+		welcomeButton.addEventListener('click', () => {
+			welcomeButton.hidden = true;
+			koraMenu.hidden = false;
+			document.getElementById('filter-link').focus();
+		});
+	</script>
 
 	<script type="module">
 
@@ -153,7 +179,7 @@
 
 		const log = document.getElementById('log');
 		const overlay = document.getElementById('overlay');
-		const startButton = document.getElementById('start-button');
+		const realityButton = document.getElementById('reality-button');
 		const arContainer = document.getElementById('ar-container');
 		const progressContainer = document.getElementById('progress-container');
 		const progressFill = document.getElementById('progress-bar-fill');
@@ -314,9 +340,10 @@
 			return loadPromise;
 		}
 
-		// Al darle al botón start se inicia la cámara (requiere gesto del usuario).
-		startButton.addEventListener('click', async () => {
+		// La experiencia de realidad aumentada comienza al elegir Realidad.
+		realityButton.addEventListener('click', async () => {
 
+			realityButton.disabled = true;
 			progressContainer.style.display = 'flex';
 
 			try {
@@ -338,18 +365,11 @@
 				setTimeout(() => overlay.remove(), 400);
 			} catch (e) {
 				console.error('Error durante la carga:', e);
-				startButton.textContent = 'Reintentar';
+				realityButton.disabled = false;
 				setProgress(0, 'Error al iniciar');
 			}
 		});
 
-		// Todo se carga automáticamente al abrir la página.
-		loadEverything().catch((e) => {
-			console.error('Error durante la carga automática:', e.message);
-			progressContainer.style.display = 'flex';
-			setProgress(0, 'Error al cargar');
-			startButton.textContent = 'Reintentar';
-		});
 
 	</script>
 </body>
